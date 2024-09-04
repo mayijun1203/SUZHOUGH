@@ -7,8 +7,8 @@ import os
 import PIL
 
 # path=os.gecwd()
-path='C:/Users/MaY8/Desktop/GITHUB/PHOTOMAPPERGH/'
-# path='C:/Users/mayij/Desktop/DOC/GITHUB/PHOTOMAPPERGH/'
+# path='C:/Users/MaY8/Desktop/GITHUB/SUZHOUGH/'
+path='C:/Users/mayij/Desktop/DOC/GITHUB/SUZHOUGH/'
 pd.options.display.max_columns=100
 
 
@@ -59,9 +59,6 @@ for i in os.listdir(path+'original'):
     df+=[imgcoords(i)]
 df=pd.concat(df,axis=0)
 df=gpd.GeoDataFrame(df,geometry=[shapely.geometry.Point(xy) for xy in zip(df['long'],df['lat'])],crs=4326)
-boundary=gpd.read_file(path+'boundary.geojson',crs=4326)
-df=gpd.sjoin(df,boundary,how='left')
-df=df.drop('index_right',axis=1)
 df['datetime']=[datetime.datetime.strptime(x,'%Y:%m:%d %H:%M:%S') for x in df['datetime']]
 df=df.sort_values('datetime').reset_index(drop=True)
 df.to_file(path+'photoattr.geojson',crs=4326, driver='GeoJSON')
